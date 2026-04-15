@@ -399,199 +399,254 @@ mindmap
 # ─────────────────────────────────────────────
 def render_hero():
     cd = get_countdown()
-    intensity_msg = (
-        "⚡ الساعة الأخيرة — كل دقيقة تُحسم!" if cd["days"] < 7
-        else "🔥 العدّ التنازلي الحاسم — التاريخ لا ينتظر!"
-        if cd["days"] < 30 else "🎯 المعركة تبدأ الآن — لا وقت للتردد!"
-    )
+    if cd["days"] < 7:
+        intensity_msg = "&#9889; الساعة الأخيرة — كل دقيقة تُحسم!"
+    elif cd["days"] < 30:
+        intensity_msg = "&#128293; العدّ التنازلي الحاسم — التاريخ لا ينتظر!"
+    else:
+        intensity_msg = "&#127919; المعركة تبدأ الآن — لا وقت للتردد!"
 
-    # SVG: طالب يرفع شهادة النجاح مع العلم الجزائري
-    hero_svg = """
-<svg viewBox="0 0 420 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;filter:drop-shadow(0 0 20px rgba(0,160,70,0.4));">
-  <!-- خلفية -->
-  <defs>
-    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" style="stop-color:#0a2416"/>
-      <stop offset="100%" style="stop-color:#050d0a"/>
-    </radialGradient>
-    <radialGradient id="glow1" cx="50%" cy="30%" r="40%">
-      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:0.3"/>
-      <stop offset="100%" style="stop-color:transparent;stop-opacity:0"/>
-    </radialGradient>
-    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#d4a574"/>
-      <stop offset="100%" style="stop-color:#c49060"/>
-    </linearGradient>
-    <linearGradient id="clothGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#1a4a2e"/>
-      <stop offset="100%" style="stop-color:#0d2818"/>
-    </linearGradient>
-    <linearGradient id="paperGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#fff9e6"/>
-      <stop offset="100%" style="stop-color:#f0e8c0"/>
-    </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-    </filter>
-  </defs>
-
-  <!-- خلفية مضيئة -->
-  <ellipse cx="210" cy="160" rx="200" ry="155" fill="url(#bgGrad)"/>
-  <ellipse cx="210" cy="120" rx="120" ry="100" fill="url(#glow1)"/>
-
-  <!-- أشعة النجاح الخلفية -->
-  <g opacity="0.15">
-    <line x1="210" y1="60" x2="210" y2="0" stroke="#d4af37" stroke-width="2"/>
-    <line x1="210" y1="60" x2="260" y2="10" stroke="#d4af37" stroke-width="1.5"/>
-    <line x1="210" y1="60" x2="310" y2="30" stroke="#d4af37" stroke-width="1.5"/>
-    <line x1="210" y1="60" x2="160" y2="10" stroke="#d4af37" stroke-width="1.5"/>
-    <line x1="210" y1="60" x2="110" y2="30" stroke="#d4af37" stroke-width="1.5"/>
-    <line x1="210" y1="60" x2="350" y2="70" stroke="#d4af37" stroke-width="1"/>
-    <line x1="210" y1="60" x2="70" y2="70" stroke="#d4af37" stroke-width="1"/>
-  </g>
-
-  <!-- الجسم - ملابس مدرسية -->
-  <ellipse cx="210" cy="265" rx="52" ry="15" fill="#061208" opacity="0.5"/>
-  <!-- ساقان -->
-  <rect x="188" y="230" width="16" height="50" rx="8" fill="#0d2818"/>
-  <rect x="210" y="230" width="16" height="50" rx="8" fill="#0d2818"/>
-  <!-- قدمان -->
-  <ellipse cx="196" cy="278" rx="12" ry="6" fill="#1a1a1a"/>
-  <ellipse cx="218" cy="278" rx="12" ry="6" fill="#1a1a1a"/>
-
-  <!-- الجذع -->
-  <path d="M175 165 Q185 155 210 152 Q235 155 245 165 L252 230 Q210 245 168 230 Z"
-        fill="url(#clothGrad)" stroke="#00823c" stroke-width="1"/>
-  <!-- طوق القميص -->
-  <path d="M198 152 L210 168 L222 152" fill="white" opacity="0.15"/>
-
-  <!-- الذراع اليسرى (مرفوعة تحمل الشهادة) -->
-  <path d="M175 175 Q145 155 130 100 Q128 90 135 88"
-        stroke="url(#skinGrad)" stroke-width="14" fill="none" stroke-linecap="round"/>
-  <!-- الذراع اليمنى -->
-  <path d="M245 175 Q265 190 268 210"
-        stroke="url(#skinGrad)" stroke-width="14" fill="none" stroke-linecap="round"/>
-
-  <!-- الشهادة (محمولة باليد اليسرى) -->
-  <g transform="translate(90,50) rotate(-15)">
-    <rect x="0" y="0" width="80" height="60" rx="4" fill="url(#paperGrad)"
-          stroke="#d4af37" stroke-width="2" filter="url(#glow)"/>
-    <!-- الخطوط الداخلية -->
-    <rect x="8" y="10" width="64" height="3" rx="1.5" fill="#d4af37" opacity="0.7"/>
-    <rect x="12" y="18" width="56" height="2" rx="1" fill="#888" opacity="0.5"/>
-    <rect x="12" y="24" width="50" height="2" rx="1" fill="#888" opacity="0.4"/>
-    <rect x="12" y="30" width="54" height="2" rx="1" fill="#888" opacity="0.3"/>
-    <!-- ختم -->
-    <circle cx="40" cy="46" r="8" fill="none" stroke="#d4af37" stroke-width="1.5" opacity="0.8"/>
-    <text x="40" y="50" text-anchor="middle" font-size="8" fill="#d4af37" opacity="0.9">BEM</text>
-    <!-- وميض -->
-    <rect x="0" y="0" width="80" height="60" rx="4" fill="white" opacity="0.08"/>
-  </g>
-
-  <!-- الرقبة -->
-  <rect x="203" y="130" width="14" height="22" rx="7" fill="url(#skinGrad)"/>
-
-  <!-- الرأس -->
-  <ellipse cx="210" cy="118" rx="28" ry="30" fill="url(#skinGrad)"/>
-  <!-- شعر -->
-  <path d="M182 110 Q185 82 210 80 Q235 82 238 110 Q230 95 210 93 Q190 95 182 110 Z"
-        fill="#2c1a0e"/>
-  <!-- ملامح الوجه -->
-  <ellipse cx="200" cy="115" rx="4" ry="4.5" fill="white"/>
-  <ellipse cx="220" cy="115" rx="4" ry="4.5" fill="white"/>
-  <ellipse cx="200" cy="116" rx="2.5" ry="3" fill="#3a2010"/>
-  <ellipse cx="220" cy="116" rx="2.5" ry="3" fill="#3a2010"/>
-  <!-- بريق العيون (ابتسامة النصر) -->
-  <circle cx="201" cy="114" r="1" fill="white" opacity="0.8"/>
-  <circle cx="221" cy="114" r="1" fill="white" opacity="0.8"/>
-  <!-- الابتسامة -->
-  <path d="M202 126 Q210 133 218 126" stroke="#c07040" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-  <!-- العلم الجزائري (صغير خلفه) -->
-  <g transform="translate(285, 30)">
-    <rect x="0" y="0" width="10" height="70" rx="2" fill="#6b4c11"/>
-    <rect x="10" y="0" width="40" height="35" fill="#006233"/>
-    <rect x="10" y="35" width="40" height="35" fill="white"/>
-    <!-- هلال ونجمة صغيرة -->
-    <path d="M30 18 A12 12 0 1 1 30 52 A10 10 0 1 0 30 18 Z" fill="#d21034" opacity="0.9"/>
-    <polygon points="30,28 31.5,33 37,33 32,36 34,41 30,38 26,41 28,36 23,33 28.5,33"
-             fill="#d21034" transform="translate(0,5)" opacity="0.9"/>
-  </g>
-
-  <!-- نجوم المجد -->
-  <text x="155" y="45" font-size="16" fill="#d4af37" opacity="0.9" filter="url(#glow)">★</text>
-  <text x="260" y="38" font-size="12" fill="#d4af37" opacity="0.7">★</text>
-  <text x="140" y="80" font-size="10" fill="#d4af37" opacity="0.5">✦</text>
-
-  <!-- نص "نجحت!" -->
-  <text x="210" y="308" text-anchor="middle"
-        font-family="Cairo, Arial" font-size="13" font-weight="bold"
-        fill="#d4af37" filter="url(#glow)">أنا ناجح بإذن الله</text>
-</svg>"""
-
-    st.markdown(f"""
-<div class="hero-wrapper">
-
-  <!-- شريط العلم -->
-  <div class="flag-stripe-container">
-    <div class="flag-stripe green"></div>
-    <div class="flag-stripe white">
-      <span class="flag-symbol">☽ ✦</span>
-    </div>
-    <div class="flag-stripe red"></div>
+    hero_html = (
+        """<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:linear-gradient(160deg,#020f06 0%,#061408 40%,#0a1e10 100%);
+  font-family:'Cairo',sans-serif;color:#e8f5ec;direction:rtl;
+  border-radius:8px;overflow:hidden;
+}
+.hero-wrap{
+  border:1px solid rgba(0,162,79,0.3);border-radius:8px;overflow:hidden;
+  box-shadow:0 0 40px rgba(0,162,79,0.15);position:relative;
+}
+.hero-wrap::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,#d21034,#f5f5f5,#006233,#f5f5f5,#d21034);
+}
+.flag-bar{display:flex;height:7px}
+.fg{background:#006233;flex:1}
+.fw{background:#f5f5f5;flex:1;display:flex;align-items:center;justify-content:center;
+    font-size:6px;color:#d21034;letter-spacing:2px}
+.fr{background:#d21034;flex:1}
+.hero-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:28px 36px 16px;gap:20px;flex-wrap:wrap;
+}
+.text-block{flex:1;min-width:260px;text-align:right}
+.badge{
+  display:inline-block;background:rgba(212,175,55,0.1);
+  border:1px solid rgba(212,175,55,0.25);color:#d4af37;
+  font-size:0.68rem;font-weight:700;letter-spacing:3px;
+  padding:4px 14px;border-radius:2px;margin-bottom:10px;
+}
+.main-title{
+  font-family:'Amiri',serif;font-size:3rem;font-weight:700;
+  color:#e8f5ec;line-height:1.1;
+  text-shadow:0 0 40px rgba(0,162,79,0.4);margin-bottom:4px;
+}
+.bem-yr{
+  font-family:'Cairo',sans-serif;font-size:2rem;font-weight:900;
+  color:#d4af37;text-shadow:0 0 20px rgba(212,175,55,0.5);letter-spacing:2px;
+}
+.sub-title{font-size:0.78rem;color:#7a9e84;letter-spacing:2px;margin:6px 0 14px}
+.divider{width:70px;height:2px;
+  background:linear-gradient(90deg,#00a84f,#d4af37,transparent);
+  margin:0 0 14px auto;border-radius:1px}
+.vision{
+  background:rgba(0,98,51,0.12);border-right:3px solid #00a84f;
+  border-radius:0 4px 4px 0;padding:12px 16px;
+  font-size:0.9rem;line-height:1.9;color:#b0d8bc;font-style:italic;
+}
+.vision strong{color:#f0cc50}
+.graphic{
+  flex-shrink:0;width:240px;
+  display:flex;align-items:center;justify-content:center;
+  animation:floatY 4s ease-in-out infinite;
+  filter:drop-shadow(0 0 20px rgba(0,162,79,0.35));
+}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.cd-wrap{
+  background:rgba(0,0,0,0.35);border-top:1px solid rgba(0,162,79,0.2);
+  padding:16px 36px;text-align:center;
+}
+.cd-title{font-size:0.78rem;color:#7a9e84;letter-spacing:2px;margin-bottom:12px}
+.cd-bar{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(0,0,0,0.4);border:1px solid rgba(212,175,55,0.2);
+  border-radius:4px;padding:10px 22px;margin-bottom:8px;
+}
+.cd-unit{display:flex;flex-direction:column;align-items:center;min-width:58px}
+.cd-num{
+  font-family:'Cairo',sans-serif;font-size:2rem;font-weight:900;
+  color:#f0cc50;text-shadow:0 0 15px rgba(240,200,80,0.5);line-height:1;
+}
+.cd-lbl{font-size:0.6rem;color:#7a9e84;letter-spacing:1px;margin-top:2px}
+.cd-sep{font-size:1.8rem;color:#8a6f20;margin-bottom:14px;animation:blk 1s step-end infinite}
+@keyframes blk{50%{opacity:0}}
+.cd-msg{font-size:0.78rem;color:#00a84f;font-weight:600;letter-spacing:1px}
+</style>
+</head>
+<body>
+<div class="hero-wrap">
+  <div class="flag-bar">
+    <div class="fg"></div>
+    <div class="fw">&#9790; &#10022;</div>
+    <div class="fr"></div>
   </div>
-
-  <div class="hero-content">
-    <!-- النص الرئيسي -->
-    <div class="hero-text-block">
-      <div class="brand-badge">⚔️ دونيا لابز تك ⚔️</div>
-      <h1 class="hero-title">فارس<br><span class="bem-year">BEM 2026</span></h1>
-      <p class="hero-subtitle">مختبر الأفكار الذكية — المرشد الاستراتيجي الأول</p>
-      <div class="hero-divider"></div>
-      <p class="hero-vision">
-        "غمّض عينيك.. تخيّل زغاريد الفرح في بيتك يوم<br>
-        <strong>19 جوان</strong> عند رؤية اسمك في قائمة الناجحين..<br>
+  <div class="hero-inner">
+    <div class="text-block">
+      <div class="badge">&#9876; دونيا لابز تك &#9876;</div>
+      <div class="main-title">فارس<br><span class="bem-yr">BEM 2026</span></div>
+      <div class="sub-title">مختبر الأفكار الذكية — المرشد الاستراتيجي الأول</div>
+      <div class="divider"></div>
+      <div class="vision">
+        "غمّض عينيك.. تخيّل زغاريد الفرح في بيتك يوم
+        <strong>19 جوان</strong> عند رؤية اسمك في قائمة الناجحين..
         هذا هو مستقبلك، فهل أنت مستعد لانتزاعه؟"
-      </p>
+      </div>
     </div>
-
-    <!-- رسمة الطالب -->
-    <div class="hero-graphic">
-      {hero_svg}
+    <div class="graphic">
+      <svg viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg" width="230" height="262">
+        <defs>
+          <radialGradient id="bg2" cx="50%" cy="50%" r="55%">
+            <stop offset="0%" stop-color="#0d2818"/>
+            <stop offset="100%" stop-color="#020a05"/>
+          </radialGradient>
+          <radialGradient id="aura" cx="50%" cy="35%" r="45%">
+            <stop offset="0%" stop-color="#d4af37" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#d4af37" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="skin" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#d4a574"/>
+            <stop offset="100%" stop-color="#b8845a"/>
+          </linearGradient>
+          <linearGradient id="shirt" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#1a4a2e"/>
+            <stop offset="100%" stop-color="#0a2015"/>
+          </linearGradient>
+          <linearGradient id="cert" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#fffbe8"/>
+            <stop offset="100%" stop-color="#ede0a0"/>
+          </linearGradient>
+          <filter id="gf">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <ellipse cx="150" cy="170" rx="148" ry="165" fill="url(#bg2)"/>
+        <ellipse cx="150" cy="110" rx="100" ry="90" fill="url(#aura)"/>
+        <g stroke="#d4af37" stroke-opacity="0.12">
+          <line x1="150" y1="50" x2="150" y2="5" stroke-width="2"/>
+          <line x1="150" y1="50" x2="195" y2="12" stroke-width="1.5"/>
+          <line x1="150" y1="50" x2="240" y2="28" stroke-width="1.5"/>
+          <line x1="150" y1="50" x2="105" y2="12" stroke-width="1.5"/>
+          <line x1="150" y1="50" x2="60" y2="28" stroke-width="1.5"/>
+        </g>
+        <ellipse cx="150" cy="308" rx="46" ry="11" fill="#000" fill-opacity="0.45"/>
+        <rect x="127" y="240" width="17" height="58" rx="8" fill="#0d2010"/>
+        <rect x="150" y="240" width="17" height="58" rx="8" fill="#0d2010"/>
+        <ellipse cx="135" cy="296" rx="14" ry="6" fill="#111"/>
+        <ellipse cx="158" cy="296" rx="14" ry="6" fill="#111"/>
+        <path d="M112 175 Q125 163 150 160 Q175 163 188 175 L194 242 Q150 256 106 242 Z"
+              fill="url(#shirt)" stroke="#00823c" stroke-width="1.2"/>
+        <path d="M140 160 L150 175 L160 160" fill="white" fill-opacity="0.12"/>
+        <circle cx="150" cy="190" r="2" fill="#006233" fill-opacity="0.6"/>
+        <circle cx="150" cy="205" r="2" fill="#006233" fill-opacity="0.6"/>
+        <circle cx="150" cy="220" r="2" fill="#006233" fill-opacity="0.6"/>
+        <path d="M112 182 Q82 162 68 108 Q66 97 73 95"
+              stroke="url(#skin)" stroke-width="15" fill="none" stroke-linecap="round"/>
+        <path d="M188 182 Q208 200 212 224"
+              stroke="url(#skin)" stroke-width="15" fill="none" stroke-linecap="round"/>
+        <circle cx="73" cy="94" r="9" fill="url(#skin)"/>
+        <g transform="translate(24,42) rotate(-18)">
+          <rect x="0" y="0" width="86" height="64" rx="5"
+                fill="url(#cert)" stroke="#d4af37" stroke-width="2.5"/>
+          <rect x="8" y="9" width="70" height="4" rx="2" fill="#d4af37" fill-opacity="0.75"/>
+          <rect x="12" y="18" width="62" height="2.5" rx="1.2" fill="#999" fill-opacity="0.5"/>
+          <rect x="12" y="25" width="55" height="2.5" rx="1.2" fill="#999" fill-opacity="0.4"/>
+          <rect x="12" y="32" width="60" height="2.5" rx="1.2" fill="#999" fill-opacity="0.35"/>
+          <circle cx="43" cy="50" r="9" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-opacity="0.9"/>
+          <text x="43" y="54" text-anchor="middle" font-size="7" font-weight="bold"
+                fill="#d4af37" font-family="Cairo,Arial">BEM</text>
+          <rect x="0" y="0" width="86" height="64" rx="5" fill="white" fill-opacity="0.06"/>
+        </g>
+        <rect x="143" y="140" width="14" height="22" rx="7" fill="url(#skin)"/>
+        <ellipse cx="150" cy="127" rx="29" ry="31" fill="url(#skin)"/>
+        <path d="M121 120 Q124 90 150 87 Q176 90 179 120 Q170 103 150 102 Q130 103 121 120 Z"
+              fill="#2a1508"/>
+        <ellipse cx="121" cy="128" rx="5" ry="7" fill="url(#skin)"/>
+        <ellipse cx="179" cy="128" rx="5" ry="7" fill="url(#skin)"/>
+        <path d="M136 114 Q142 111 148 113" stroke="#5a3010" stroke-width="2"
+              fill="none" stroke-linecap="round"/>
+        <path d="M152 113 Q158 111 164 114" stroke="#5a3010" stroke-width="2"
+              fill="none" stroke-linecap="round"/>
+        <ellipse cx="140" cy="122" rx="5" ry="5.5" fill="white"/>
+        <ellipse cx="160" cy="122" rx="5" ry="5.5" fill="white"/>
+        <ellipse cx="140" cy="123" rx="3.2" ry="3.5" fill="#3a2010"/>
+        <ellipse cx="160" cy="123" rx="3.2" ry="3.5" fill="#3a2010"/>
+        <circle cx="141" cy="121" r="1.2" fill="white" fill-opacity="0.85"/>
+        <circle cx="161" cy="121" r="1.2" fill="white" fill-opacity="0.85"/>
+        <path d="M147 128 Q150 132 153 128" stroke="#b07040" stroke-width="1.2"
+              fill="none" stroke-linecap="round"/>
+        <path d="M141 137 Q150 145 159 137"
+              stroke="#c06040" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <g transform="translate(210,25)">
+          <rect x="0" y="0" width="9" height="74" rx="2.5" fill="#7a5a20"/>
+          <rect x="9" y="0" width="44" height="37" fill="#006233"/>
+          <rect x="9" y="37" width="44" height="37" fill="#f0f0f0"/>
+          <path d="M31 16 A13 13 0 1 1 31 58 A11 11 0 1 0 31 16 Z"
+                fill="#d21034" fill-opacity="0.95"/>
+          <polygon
+            points="31,27 32.8,33.5 39.5,33.5 34,37 36,43.5 31,40 26,43.5 28,37 22.5,33.5 29.2,33.5"
+            fill="#d21034" fill-opacity="0.95" transform="translate(0,4)"/>
+        </g>
+        <text x="95" y="52" font-size="17" fill="#d4af37" fill-opacity="0.9"
+              filter="url(#gf)">&#9733;</text>
+        <text x="200" y="44" font-size="13" fill="#d4af37" fill-opacity="0.75">&#9733;</text>
+        <text x="80" y="90" font-size="11" fill="#d4af37" fill-opacity="0.55">&#10022;</text>
+        <text x="150" y="326" text-anchor="middle"
+              font-family="Cairo,Arial" font-size="12" font-weight="bold"
+              fill="#d4af37" filter="url(#gf)">&#x623;&#x646;&#x627; &#x646;&#x627;&#x62C;&#x62D; &#x628;&#x625;&#x630;&#x646; &#x627;&#x644;&#x644;&#x647;</text>
+      </svg>
     </div>
   </div>
-
-  <!-- العداد التنازلي -->
-  <div class="countdown-section">
-    <p class="countdown-title">⏳ الوقت المتبقي لمعركة النجاح</p>
-    <div class="countdown-bar">
-      <div class="cd-unit">
-        <span class="cd-num">{cd['days']}</span>
-        <span class="cd-lbl">يوم</span>
-      </div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit">
-        <span class="cd-num">{cd['hours']:02d}</span>
-        <span class="cd-lbl">ساعة</span>
-      </div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit">
-        <span class="cd-num">{cd['minutes']:02d}</span>
-        <span class="cd-lbl">دقيقة</span>
-      </div>
-      <span class="cd-sep">:</span>
-      <div class="cd-unit">
-        <span class="cd-num">{cd['seconds']:02d}</span>
-        <span class="cd-lbl">ثانية</span>
-      </div>
-    </div>
-    <p class="countdown-sub">{intensity_msg}</p>
+  <div class="cd-wrap">
+    <div class="cd-title">&#9203; الوقت المتبقي لمعركة النجاح</div>
+    <div class="cd-bar" id="cd-bar"></div>
+    <div class="cd-msg" id="cd-msg">""" + intensity_msg + """</div>
   </div>
-
 </div>
-""", unsafe_allow_html=True)
-
+<script>
+  var BEM_TS = new Date("2026-05-19T08:00:00").getTime();
+  var LABELS = ["\u064a\u0648\u0645","\u0633\u0627\u0639\u0629","\u062f\u0642\u064a\u0642\u0629","\u062b\u0627\u0646\u064a\u0629"];
+  function pad(n){return n<10?"0"+n:String(n);}
+  function tick(){
+    var diff = BEM_TS - Date.now();
+    if(diff<=0){document.getElementById("cd-bar").textContent="\u0627\u0646\u062a\u0647\u0649 \u0627\u0644\u0648\u0642\u062a";return;}
+    var vals=[
+      Math.floor(diff/86400000),
+      Math.floor((diff%86400000)/3600000),
+      Math.floor((diff%3600000)/60000),
+      Math.floor((diff%60000)/1000)
+    ];
+    var html="";
+    vals.forEach(function(v,i){
+      html+='<div class="cd-unit"><span class="cd-num">'+(i===0?v:pad(v))+'</span><span class="cd-lbl">'+LABELS[i]+'</span></div>';
+      if(i<3) html+='<span class="cd-sep">:</span>';
+    });
+    document.getElementById("cd-bar").innerHTML=html;
+  }
+  tick();
+  setInterval(tick,1000);
+</script>
+</body>
+</html>"""
+    )
+    components.html(hero_html, height=520, scrolling=False)
 # ─────────────────────────────────────────────
 #  الشريط الجانبي — تسجيل الطالب
 # ─────────────────────────────────────────────
