@@ -19,7 +19,7 @@ st.set_page_config(
     page_title="فارس BEM 2026 | دونيا لابز تك",
     page_icon="⚔️",
     layout="wide",
-    initial_sidebar_bar="expanded",
+    initial_sidebar_state="expanded",
 )
 
 # ─────────────────────────────────────────────
